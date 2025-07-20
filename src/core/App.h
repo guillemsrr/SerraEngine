@@ -4,18 +4,17 @@
 #include <SDL3/SDL.h>
 #include <string>
 
-class GameBase;
-
 namespace SerraEngine
 {
+    class GameBase;
+
     class App
     {
     public:
         App(int argc, char* argv[]);
 
         bool Init(const std::string& title, int width, int height);
-
-        void StartGame(GameBase& network_game);
+        void StartGame(GameBase& game);
 
     private:
         int _argc;
@@ -25,7 +24,6 @@ namespace SerraEngine
         SDL_GLContext _glContext;
 
         void InitIMGUI();
-        void RenderHUD(GameBase& game);
         void Quit();
 
         SDL_AppResult HandleEvent(const SDL_Event& sdl_event);

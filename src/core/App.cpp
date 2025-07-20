@@ -68,7 +68,7 @@ namespace SerraEngine
         if (!gladLoadGLLoader((GLADloadproc)SDL_GL_GetProcAddress))
         {
             SDL_Log("Failed to initialize GLAD");
-            return SDL_APP_FAILURE;
+            return false;
         }
 #endif
 
@@ -144,52 +144,11 @@ namespace SerraEngine
         return SDL_APP_CONTINUE;
     }
 
-    void App::RenderHUD(GameBase& game)
-    {
-        const float DISTANCE_FROM_EDGE = 10.0f;
-        ImVec2 window_pos = ImVec2(DISTANCE_FROM_EDGE, DISTANCE_FROM_EDGE);
-        ImVec2 window_pos_pivot = ImVec2(0.0f, 0.0f); // top-left
-
-        ImGui::SetNextWindowPos(window_pos, ImGuiCond_Always, window_pos_pivot);
-        ImGui::SetNextWindowBgAlpha(0.0f);
-
-        ImU32 HUDColor = IM_COL32(255, 255, 255, 255);
-        ImGui::PushStyleColor(ImGuiCol_Text, HUDColor);
-
-        ImGui::Begin("HUD",
-                     nullptr,
-                     ImGuiWindowFlags_NoDecoration | ImGuiWindowFlags_AlwaysAutoResize |
-                     ImGuiWindowFlags_NoFocusOnAppearing | ImGuiWindowFlags_NoNav | ImGuiWindowFlags_NoMove |
-                     ImGuiWindowFlags_NoBackground);
-
-        game.RenderHUD();
-
-        ImGui::End();
-
-        window_pos = ImVec2(ImGui::GetIO().DisplaySize.x - DISTANCE_FROM_EDGE, DISTANCE_FROM_EDGE);
-        window_pos_pivot = ImVec2(1.0f, 0.0f); // top-right
-
-        ImGui::SetNextWindowPos(window_pos, ImGuiCond_Always, window_pos_pivot);
-        ImGui::SetNextWindowBgAlpha(0.f);
-
-        ImGui::Begin("FPS",
-                     nullptr,
-                     ImGuiWindowFlags_NoDecoration | ImGuiWindowFlags_AlwaysAutoResize |
-                     ImGuiWindowFlags_NoFocusOnAppearing | ImGuiWindowFlags_NoNav | ImGuiWindowFlags_NoMove |
-                     ImGuiWindowFlags_NoBackground);
-
-        ImGui::Text("FPS: %.1f", ImGui::GetIO().Framerate);
-        ImGui::End();
-
-        ImGui::PopStyleColor();
-
-        ImGui::Render();
-        ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
-    }
-
     void App::StartGame(GameBase& game)
     {
-        game.Init();
+        uint64_t lastCounter = SDL_GetPerformanceCounter();
+        const double freq = static_cast<double>(SDL_GetPerformanceFrequency());
+        game.Init(_window);
 
         SDL_Event e;
         SDL_AppResult appResult = SDL_APP_CONTINUE;
@@ -205,10 +164,15 @@ namespace SerraEngine
             ImGui_ImplSDL3_NewFrame();
             ImGui::NewFrame();
 
-            game.Update(SDL_GetTicks());
+            uint64_t currentCounter = SDL_GetPerformanceCounter();
+            double deltaTime = static_cast<double>(currentCounter - lastCounter) / freq;
+            lastCounter = currentCounter;
+            game.Update(static_cast<float>(deltaTime));
             game.Render();
-            RenderHUD(game);
+            game.RenderHUD();
 
+            ImGui::Render();
+            ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
             SDL_GL_SwapWindow(_window);
         }
 
