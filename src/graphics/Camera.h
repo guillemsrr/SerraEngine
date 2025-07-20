@@ -8,7 +8,7 @@
 class Camera
 {
 public:
-    Camera(glm::vec3 position, float fov, float aspectRatio, float nearPlane, float farPlane);
+    Camera(float fov, float aspectRatio, float nearPlane, float farPlane);
 
     float _yaw = 0.f;
     float _pitch = 0.f;
@@ -25,6 +25,7 @@ public:
     void UpdatePosition();
     void ApplyMotion(float xrel, float yrel);
     void AddRadius(float x);
+    void SetPosition(const glm::vec3& position);
 
 private:
     glm::vec3 _position;

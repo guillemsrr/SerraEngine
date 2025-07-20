@@ -1,7 +1,6 @@
 ﻿// Copyright (c) Guillem Serra. All Rights Reserved.
 
 #pragma once
-#include <imgui.h>
 #include <vector>
 
 #include "graphics/Camera.h"
@@ -31,7 +30,6 @@ namespace SerraEngine
         Camera* _camera;
         RendererBase _rendererBase;
 
-        virtual ImU32 GetHUDColor();
         virtual void RenderUI() = 0;
 
         void AddInputHandler(InputBase* inputHandler);

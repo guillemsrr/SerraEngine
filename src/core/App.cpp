@@ -63,7 +63,7 @@ namespace SerraEngine
         SDL_GL_SetAttribute(SDL_GL_STENCIL_SIZE, 8);
 
 #ifdef __EMSCRIPTEN__
-        // Emscripten / WebGL — no glad loader needed
+        //no glad loader needed
 #else
         if (!gladLoadGLLoader((GLADloadproc)SDL_GL_GetProcAddress))
         {

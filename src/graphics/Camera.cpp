@@ -1,7 +1,7 @@
 ﻿#include "Camera.h"
 
-Camera::Camera(glm::vec3 position, float fov, float aspect, float nearP, float farP)
-    : _position(position), _target(0.0f, 0.0f, 0.0f)
+Camera::Camera(float fov, float aspect, float nearP, float farP)
+    : _position(), _target(0.0f, 0.0f, 0.0f)
 {
     UpdateViewMatrix();
     UpdateProjectionMatrix(fov, aspect, nearP, farP);
@@ -52,7 +52,7 @@ void Camera::UpdatePosition()
 
 void Camera::ApplyMotion(float xrel, float yrel)
 {
-    _yaw -=  xrel* _sensitivity;
+    _yaw -= xrel * _sensitivity;
     _pitch -= yrel * _sensitivity;
 
     _pitch = glm::clamp(_pitch, -_pitchLimit, _pitchLimit);
@@ -60,8 +60,14 @@ void Camera::ApplyMotion(float xrel, float yrel)
 
 void Camera::AddRadius(float wheelValue)
 {
-    _radius -=  wheelValue * _zoomSensitivity;
+    _radius -= wheelValue * _zoomSensitivity;
     _radius = glm::clamp(_radius, 5.0f, 100.0f);
+}
+
+void Camera::SetPosition(const glm::vec3& position)
+{
+    _position = position;
+    UpdateViewMatrix();
 }
 
 void Camera::UpdateViewMatrix()
