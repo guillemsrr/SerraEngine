@@ -1,14 +1,36 @@
 ﻿#include "GameBase.h"
 #include <imgui.h>
 
+SerraEngine::GameBase::GameBase(): _camera(nullptr), _rendererBase(nullptr)
+{
+}
+
 void SerraEngine::GameBase::Init(SDL_Window* window)
 {
     _window = window;
+
+    int windowWidth, windowHeight;
+    SDL_GetWindowSizeInPixels(window, &windowWidth, &windowHeight);
+    float aspectRatio = static_cast<float>(windowWidth) / static_cast<float>(windowHeight);
+    _camera = new Camera(glm::vec3(0, 0, 5), glm::radians(45.0f), aspectRatio, 0.1f, 100.0f);
+}
+
+void SerraEngine::GameBase::HandleEvent(const SDL_Event& e)
+{
+    for (InputBase* const& inputHandler : _inputHandlers)
+    {
+        inputHandler->HandleEvent(e);
+    }
 }
 
 ImU32 SerraEngine::GameBase::GetHUDColor()
 {
     return IM_COL32(0, 0, 0, 255);
+}
+
+void SerraEngine::GameBase::AddInputHandler(InputBase* inputHandler)
+{
+    _inputHandlers.push_back(inputHandler);
 }
 
 void SerraEngine::GameBase::RenderHUD()
