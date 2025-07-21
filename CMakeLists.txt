@@ -47,9 +47,4 @@ target_link_libraries(${PROJECT_NAME}
         glm::glm
 )
 
-# Compile-time definitions
-target_compile_definitions(${PROJECT_NAME} PRIVATE
-    SHADER_DIR="${CMAKE_SOURCE_DIR}/src/graphics/shaders"
-)
-
-install(DIRECTORY src/Graphics/Shaders DESTINATION .)
+file(COPY ${CMAKE_SOURCE_DIR}/src/graphics/shaders DESTINATION ${CMAKE_BINARY_DIR})
