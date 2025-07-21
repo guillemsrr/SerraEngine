@@ -20,7 +20,7 @@ namespace SerraEngine
 
         virtual void Init(SDL_Window* window);
         virtual void Update(float deltaTime) = 0;
-        virtual void HandleEvent(const SDL_Event& e);
+        virtual void HandleEvent(const SDL_Event& event);
         virtual void Render() = 0;
         virtual void RenderHUD();
         virtual void Quit() = 0;
@@ -28,13 +28,15 @@ namespace SerraEngine
     protected:
         SDL_Window* _window = nullptr;
         Camera* _camera;
-        RendererBase _rendererBase;
 
         virtual void RenderUI() = 0;
 
+        void SetRenderer(RendererBase* renderer);
         void AddInputHandler(InputBase* inputHandler);
 
     private:
+        RendererBase* _rendererBase;
         std::vector<InputBase*> _inputHandlers;
+        float GetAspectRatio(int width, int height);
     };
 }

@@ -1,5 +1,6 @@
 ﻿#include "GameBase.h"
 #include <imgui.h>
+#include <memory>
 
 SerraEngine::GameBase::GameBase(): _camera(nullptr), _rendererBase(nullptr)
 {
@@ -11,16 +12,31 @@ void SerraEngine::GameBase::Init(SDL_Window* window)
 
     int windowWidth, windowHeight;
     SDL_GetWindowSizeInPixels(window, &windowWidth, &windowHeight);
-    float aspectRatio = static_cast<float>(windowWidth) / static_cast<float>(windowHeight);
+    float aspectRatio = GetAspectRatio(windowWidth, windowHeight);
     _camera = new Camera(glm::radians(45.f), aspectRatio, 0.1f, 100.f);
 }
 
-void SerraEngine::GameBase::HandleEvent(const SDL_Event& e)
+void SerraEngine::GameBase::HandleEvent(const SDL_Event& event)
 {
+    if (event.window.type == SDL_EVENT_WINDOW_RESIZED || event.window.type == SDL_EVENT_WINDOW_PIXEL_SIZE_CHANGED)
+    {
+        int newWidth = event.window.data1;
+        int newHeight = event.window.data2;
+
+        float aspectRatio = GetAspectRatio(newWidth, newHeight);
+        _camera->SetAspectRatio(aspectRatio);
+        _rendererBase->SetViewPortSize(newWidth, newHeight);
+    }
+
     for (InputBase* const& inputHandler : _inputHandlers)
     {
-        inputHandler->HandleEvent(e);
+        inputHandler->HandleEvent(event);
     }
+}
+
+void SerraEngine::GameBase::SetRenderer(RendererBase* renderer)
+{
+    _rendererBase = renderer;
 }
 
 void SerraEngine::GameBase::AddInputHandler(InputBase* inputHandler)
@@ -37,7 +53,7 @@ void SerraEngine::GameBase::RenderHUD()
     ImGui::SetNextWindowPos(window_pos, ImGuiCond_Always, window_pos_pivot);
     ImGui::SetNextWindowBgAlpha(0.0f);
 
-    ImU32 HUDColor = _rendererBase.GetHUDColor();
+    ImU32 HUDColor = _rendererBase->GetHUDColor();
     ImGui::PushStyleColor(ImGuiCol_Text, HUDColor);
 
     ImGui::Begin("HUD",
@@ -64,4 +80,9 @@ void SerraEngine::GameBase::RenderHUD()
     ImGui::End();
 
     ImGui::PopStyleColor();
+}
+
+float SerraEngine::GameBase::GetAspectRatio(int width, int height)
+{
+    return static_cast<float>(width) / static_cast<float>(height);
 }
