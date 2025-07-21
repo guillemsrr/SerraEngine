@@ -1,10 +1,10 @@
 ﻿#include "Camera.h"
 
 Camera::Camera(float fov, float aspect, float nearP, float farP)
-    : _position(), _target(0.0f, 0.0f, 0.0f)
+    : _position(), _target(0.0f, 0.0f, 0.0f), _fov(fov), _aspectRatio(aspect), _nearP(nearP), _farP(farP)
 {
     UpdateViewMatrix();
-    UpdateProjectionMatrix(fov, aspect, nearP, farP);
+    UpdateProjectionMatrix();
 }
 
 void Camera::SetTarget(const glm::vec3& target)
@@ -14,7 +14,8 @@ void Camera::SetTarget(const glm::vec3& target)
 
 void Camera::SetAspectRatio(float aspectRatio)
 {
-    UpdateProjectionMatrix(glm::radians(45.0f), aspectRatio, 0.1f, 100.0f);
+    _aspectRatio = aspectRatio;
+    UpdateProjectionMatrix();
 }
 
 const glm::mat4& Camera::GetViewMatrix() const
@@ -75,7 +76,7 @@ void Camera::UpdateViewMatrix()
     _viewMatrix = glm::lookAt(_position, _target, _upVector);
 }
 
-void Camera::UpdateProjectionMatrix(float fov, float aspect, float nearP, float farP)
+void Camera::UpdateProjectionMatrix()
 {
-    _projectionMatrix = glm::perspective(fov, aspect, nearP, farP);
+    _projectionMatrix = glm::perspective(_fov, _aspectRatio, _nearP, _farP);
 }

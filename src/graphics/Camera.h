@@ -16,7 +16,6 @@ public:
 
     void SetTarget(const glm::vec3& target);
     void SetAspectRatio(float aspectRatio);
-
     const glm::mat4& GetViewMatrix() const;
     const glm::mat4& GetProjectionMatrix() const;
 
@@ -33,6 +32,11 @@ private:
     glm::mat4 _viewMatrix;
     glm::mat4 _projectionMatrix;
 
+    float _fov;
+    float _aspectRatio;
+    float _nearP;
+    float _farP;
+
     glm::vec3 _upVector = {0.f, 1.f, 0.f};
 
     const float _sensitivity = 0.005f;
@@ -40,5 +44,5 @@ private:
     const float _pitchLimit = glm::radians(89.0f);
 
     void UpdateViewMatrix();
-    void UpdateProjectionMatrix(float fov, float aspect, float nearP, float farP);
+    void UpdateProjectionMatrix();
 };

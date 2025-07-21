@@ -12,6 +12,7 @@ public:
     virtual void RenderBackground();
 
     virtual ImU32 GetHUDColor();
+    void SetViewPortSize(int new_width, int new_height);
 
 protected:
     Camera* _camera;

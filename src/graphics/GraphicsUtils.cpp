@@ -5,14 +5,10 @@
 
 #include <SDL3/SDL_log.h>
 
-#ifndef SHADER_DIR
-#define SHADER_DIR "/Shaders"
-#endif
-
 GLuint GraphicsUtils::LoadShader(const std::string& vertexPath, const std::string& fragmentPath)
 {
-    std::string fullVertexPath = std::string(SHADER_DIR) + "/" + vertexPath;
-    std::string fullFragmentPath = std::string(SHADER_DIR) + "/" + fragmentPath;
+    std::string fullVertexPath = std::string("shaders/") + vertexPath;
+    std::string fullFragmentPath = std::string("shaders/") + fragmentPath;
 
     std::ifstream vFile(fullVertexPath), fFile(fullFragmentPath);
     if (!vFile.is_open() || !fFile.is_open())

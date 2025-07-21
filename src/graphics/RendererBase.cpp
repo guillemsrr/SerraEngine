@@ -16,3 +16,8 @@ ImU32 RendererBase::GetHUDColor()
 {
     return IM_COL32(0, 0, 0, 255);
 }
+
+void RendererBase::SetViewPortSize(int new_width, int new_height)
+{
+    glViewport(0, 0, new_width, new_height);
+}
