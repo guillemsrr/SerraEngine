@@ -58,9 +58,3 @@ void CubeRenderer::Draw()
     glBindVertexArray(VAO);
     glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
 }
-
-void CubeRenderer::Cleanup()
-{
-    glDeleteVertexArrays(1, &VAO);
-    glDeleteBuffers(1, &VBO);
-}
