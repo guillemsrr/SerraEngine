@@ -85,7 +85,8 @@ void SerraEngine::GameBase::RenderHUD()
                  ImGuiWindowFlags_NoDecoration | ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_NoFocusOnAppearing
                  | ImGuiWindowFlags_NoNav | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoBackground);
 
-    ImGui::Text("FPS: %.1f", ImGui::GetIO().Framerate);
+    float ms = 1000.0f / ImGui::GetIO().Framerate;
+    ImGui::Text("FPS: %.1f (%.3f ms)", ImGui::GetIO().Framerate, ms);
     ImGui::End();
 
     ImGui::PopStyleColor();
