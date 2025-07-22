@@ -8,6 +8,7 @@ class RendererBase
 {
 public:
     RendererBase(Camera* camera);
+    virtual ~RendererBase() = default;
 
     virtual void RenderBackground();
 
@@ -15,5 +16,5 @@ public:
     void SetViewPortSize(int new_width, int new_height);
 
 protected:
-    Camera* _camera;
+    const Camera* _camera;
 };
