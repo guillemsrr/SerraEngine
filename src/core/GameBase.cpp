@@ -2,6 +2,10 @@
 #include <imgui.h>
 #include <memory>
 
+#include "audio/AudioEngine.h"
+
+#include "graphics/RendererBase.h"
+
 SerraEngine::GameBase::GameBase(): _camera(nullptr), _rendererBase(nullptr)
 {
 }
@@ -13,7 +17,7 @@ void SerraEngine::GameBase::Init(SDL_Window* window)
     int windowWidth, windowHeight;
     SDL_GetWindowSizeInPixels(window, &windowWidth, &windowHeight);
     float aspectRatio = GetAspectRatio(windowWidth, windowHeight);
-    _camera = new Camera(glm::radians(45.f), aspectRatio, 0.1f, 100.f);
+    _camera = new Camera(aspectRatio);
 }
 
 void SerraEngine::GameBase::HandleEvent(const SDL_Event& event)
@@ -37,6 +41,11 @@ void SerraEngine::GameBase::HandleEvent(const SDL_Event& event)
 void SerraEngine::GameBase::SetRenderer(RendererBase* renderer)
 {
     _rendererBase = renderer;
+}
+
+void SerraEngine::GameBase::SetAudioEngine(AudioEngine* audioEngine)
+{
+    _audioEngine = audioEngine;
 }
 
 void SerraEngine::GameBase::AddInputHandler(InputBase* inputHandler)

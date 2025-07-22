@@ -98,6 +98,7 @@ namespace SerraEngine
             SDL_DestroyWindow(_window);
             _window = nullptr;
         }
+
         SDL_Quit();
     }
 

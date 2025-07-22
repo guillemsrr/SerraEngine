@@ -8,11 +8,8 @@
 class Camera
 {
 public:
+    Camera(float aspectRatio);
     Camera(float fov, float aspectRatio, float nearPlane, float farPlane);
-
-    float _yaw = 0.f;
-    float _pitch = 0.f;
-    float _radius = 30.f;
 
     void SetTarget(const glm::vec3& target);
     void SetAspectRatio(float aspectRatio);
@@ -23,14 +20,24 @@ public:
     glm::vec3 GetForward() const;
     glm::vec3 GetRight() const;
     glm::vec3 GetUp() const;
-    
+
     void UpdatePosition();
     void ApplyMotion(float xrel, float yrel);
     void AddRadius(float x);
     void SetPosition(const glm::vec3& position);
+    void SetRotationAngles(float yaw, float pitch);
+    void SetYawAngle(float yaw);
+
+    void SetPitchAngle(float pitch);
+    void SetRadius(float radius);
+    void SetFOV(float fov);
+    void SetNearPlane(float nearPlane);
+    void SetFarPlane(float farPlane);
+
     float GetAspectRatio() const;
     float GetFOV() const;
     float GetFOVRad() const;
+    float GetPitchAngle() const;
 
 private:
     glm::vec3 _position;
@@ -38,10 +45,14 @@ private:
     glm::mat4 _viewMatrix;
     glm::mat4 _projectionMatrix;
 
-    float _fov;
+    float _yawRad = 0.f;
+    float _pitchRad = 0.f;
+    float _radius = 30.f;
+
+    float _fov = glm::radians(45.f);
     float _aspectRatio;
-    float _nearP;
-    float _farP;
+    float _nearP = 0.1f;
+    float _farP = 100.f;
 
     glm::vec3 _upVector = {0.f, 1.f, 0.f};
 

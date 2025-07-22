@@ -4,11 +4,11 @@
 #include <vector>
 
 #include "graphics/Camera.h"
-#include "graphics/RendererBase.h"
-
 #include "input/InputBase.h"
-
 #include <SDL3/SDL_events.h>
+
+class RendererBase;
+class AudioEngine;
 
 namespace SerraEngine
 {
@@ -32,10 +32,12 @@ namespace SerraEngine
         virtual void RenderUI() = 0;
 
         void SetRenderer(RendererBase* renderer);
+        void SetAudioEngine(AudioEngine* audioEngine);
         void AddInputHandler(InputBase* inputHandler);
 
     private:
         RendererBase* _rendererBase;
+        AudioEngine* _audioEngine;
         std::vector<InputBase*> _inputHandlers;
         float GetAspectRatio(int width, int height);
     };
