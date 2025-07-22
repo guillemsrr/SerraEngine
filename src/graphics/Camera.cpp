@@ -28,6 +28,11 @@ const glm::mat4& Camera::GetProjectionMatrix() const
     return _projectionMatrix;
 }
 
+glm::vec3 Camera::GetPosition() const
+{
+    return _position;
+}
+
 glm::vec3 Camera::GetForward() const
 {
     glm::vec3 forward = glm::normalize(_target - _position);
@@ -39,6 +44,13 @@ glm::vec3 Camera::GetRight() const
     glm::vec3 forward = glm::normalize(_target - _position);
     glm::vec3 right = glm::normalize(glm::cross(forward, _upVector));
     return right;
+}
+
+glm::vec3 Camera::GetUp() const
+{
+    glm::vec3 forward = GetForward();
+    glm::vec3 right = GetRight();
+    return glm::normalize(glm::cross(right, forward));
 }
 
 void Camera::UpdatePosition()
@@ -69,6 +81,21 @@ void Camera::SetPosition(const glm::vec3& position)
 {
     _position = position;
     UpdateViewMatrix();
+}
+
+float Camera::GetAspectRatio() const
+{
+    return _aspectRatio;
+}
+
+float Camera::GetFOV() const
+{
+    return _fov;
+}
+
+float Camera::GetFOVRad() const
+{
+    return glm::radians(GetFOV());
 }
 
 void Camera::UpdateViewMatrix()

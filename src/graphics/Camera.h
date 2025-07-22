@@ -19,12 +19,18 @@ public:
     const glm::mat4& GetViewMatrix() const;
     const glm::mat4& GetProjectionMatrix() const;
 
+    glm::vec3 GetPosition() const;
     glm::vec3 GetForward() const;
     glm::vec3 GetRight() const;
+    glm::vec3 GetUp() const;
+    
     void UpdatePosition();
     void ApplyMotion(float xrel, float yrel);
     void AddRadius(float x);
     void SetPosition(const glm::vec3& position);
+    float GetAspectRatio() const;
+    float GetFOV() const;
+    float GetFOVRad() const;
 
 private:
     glm::vec3 _position;
