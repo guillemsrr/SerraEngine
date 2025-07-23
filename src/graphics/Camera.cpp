@@ -73,12 +73,22 @@ void Camera::ApplyMotion(float xrel, float yrel)
     _pitchRad -= yrel * _sensitivity;
 
     _pitchRad = glm::clamp(_pitchRad, -_pitchLimit, _pitchLimit);
+
+    if (OnCameraMoved)
+    {
+        OnCameraMoved();
+    }
 }
 
 void Camera::AddRadius(float wheelValue)
 {
     _radius -= wheelValue * _zoomSensitivity;
     _radius = glm::clamp(_radius, _minRadius, _maxRadius);
+
+    if (OnCameraMoved)
+    {
+        OnCameraMoved();
+    }
 }
 
 void Camera::SetPosition(const glm::vec3& position)

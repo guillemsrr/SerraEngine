@@ -2,6 +2,8 @@
 
 #pragma once
 
+#include <functional>
+
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 
@@ -10,6 +12,8 @@ class Camera
 public:
     Camera(float aspectRatio);
     Camera(float fov, float aspectRatio, float nearPlane, float farPlane);
+
+    mutable std::function<void()> OnCameraMoved;
 
     void SetTarget(const glm::vec3& target);
     void SetAspectRatio(float aspectRatio);
