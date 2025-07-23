@@ -78,7 +78,7 @@ void Camera::ApplyMotion(float xrel, float yrel)
 void Camera::AddRadius(float wheelValue)
 {
     _radius -= wheelValue * _zoomSensitivity;
-    _radius = glm::clamp(_radius, 5.0f, 100.0f);
+    _radius = glm::clamp(_radius, _minRadius, _maxRadius);
 }
 
 void Camera::SetPosition(const glm::vec3& position)
@@ -123,6 +123,11 @@ void Camera::SetFarPlane(float farPlane)
     _farP = farPlane;
 }
 
+void Camera::SetZoomSensitivity(float sensitivity)
+{
+    _zoomSensitivity = sensitivity;
+}
+
 float Camera::GetAspectRatio() const
 {
     return _aspectRatio;
@@ -141,6 +146,11 @@ float Camera::GetFOVRad() const
 float Camera::GetPitchAngle() const
 {
     return glm::degrees(_pitchRad);
+}
+
+void Camera::SetMaxRadius(int maxRadius)
+{
+    _maxRadius = maxRadius;
 }
 
 void Camera::UpdateViewMatrix()

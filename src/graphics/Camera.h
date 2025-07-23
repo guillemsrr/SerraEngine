@@ -23,7 +23,7 @@ public:
 
     void UpdatePosition();
     void ApplyMotion(float xrel, float yrel);
-    void AddRadius(float x);
+    void AddRadius(float wheelValue);
     void SetPosition(const glm::vec3& position);
     void SetRotationAngles(float yaw, float pitch);
     void SetYawAngle(float yaw);
@@ -33,11 +33,13 @@ public:
     void SetFOV(float fov);
     void SetNearPlane(float nearPlane);
     void SetFarPlane(float farPlane);
+    void SetZoomSensitivity(float sensitivity);
 
     float GetAspectRatio() const;
     float GetFOV() const;
     float GetFOVRad() const;
     float GetPitchAngle() const;
+    void SetMaxRadius(int maxRadius);
 
 private:
     glm::vec3 _position;
@@ -48,6 +50,8 @@ private:
     float _yawRad = 0.f;
     float _pitchRad = 0.f;
     float _radius = 30.f;
+    float _minRadius = 1.f;
+    float _maxRadius = 100.f;
 
     float _fov = glm::radians(45.f);
     float _aspectRatio;
@@ -57,7 +61,7 @@ private:
     glm::vec3 _upVector = {0.f, 1.f, 0.f};
 
     const float _sensitivity = 0.005f;
-    const float _zoomSensitivity = 0.5f;
+    float _zoomSensitivity = 0.5f;
     const float _pitchLimit = glm::radians(89.0f);
 
     void UpdateViewMatrix();
