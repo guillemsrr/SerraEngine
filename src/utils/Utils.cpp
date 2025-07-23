@@ -9,8 +9,17 @@ float Utils::LengthSquared(const glm::vec3& v)
 
 uint8_t Utils::FloatToByte255(float value)
 {
-    value = std::clamp(value, 0.0f, 1.0f);
     return static_cast<uint8_t>(255.999f * value);
+}
+
+uint32_t Utils::ConvertToRGBA(const glm::vec4& color)
+{
+    uint8_t r = FloatToByte255(color.r);
+    uint8_t g = FloatToByte255(color.g);
+    uint8_t b = FloatToByte255(color.b);
+    uint8_t a = FloatToByte255(color.a);
+
+    return (a << 24) | (b << 16) | (g << 8) | r;
 }
 
 float Utils::RandomFloat()
