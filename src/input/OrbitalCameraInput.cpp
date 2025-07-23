@@ -2,6 +2,10 @@
 
 #include "graphics/Camera.h"
 
+OrbitalCameraInput::OrbitalCameraInput(Camera* const camera) : _camera(camera)
+{
+}
+
 void OrbitalCameraInput::HandleEvent(const SDL_Event& event)
 {
     switch (event.type)

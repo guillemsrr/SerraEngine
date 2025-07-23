@@ -7,18 +7,13 @@ class Camera;
 
 class OrbitalCameraInput : public InputBase
 {
+protected:
+    ~OrbitalCameraInput() = default;
+
 public:
-    explicit OrbitalCameraInput(Camera* const camera)
-        : _camera(camera)
-    {
-    }
+    explicit OrbitalCameraInput(Camera* const camera);
 
     void HandleEvent(const SDL_Event& event) override;
-
-    bool IsMouseRotating() const
-    {
-        return _mouseRotating;
-    }
 
 private:
     bool _mouseRotating = false;

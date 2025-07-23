@@ -5,6 +5,9 @@
 
 class InputBase
 {
+protected:
+    ~InputBase() = default;
+
 public:
     virtual void HandleEvent(const SDL_Event& event) = 0;
 };
