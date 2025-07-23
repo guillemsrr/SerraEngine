@@ -47,4 +47,4 @@ target_link_libraries(${PROJECT_NAME}
         glm::glm
 )
 
-file(COPY ${CMAKE_SOURCE_DIR}/src/graphics/shaders DESTINATION ${CMAKE_BINARY_DIR})
+file(COPY ${CMAKE_CURRENT_SOURCE_DIR}/src/graphics/shaders DESTINATION ${CMAKE_BINARY_DIR})
