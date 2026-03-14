@@ -157,6 +157,7 @@ namespace SerraEngine
         {
             while (SDL_PollEvent(&e))
             {
+                ImGui_ImplSDL3_ProcessEvent(&e);
                 appResult = HandleEvent(e);
                 game.HandleEvent(e);
             }
