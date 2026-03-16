@@ -3,6 +3,7 @@
 #pragma once
 
 #include <functional>
+#include <vector>
 
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
@@ -13,7 +14,10 @@ public:
     Camera(float aspectRatio);
     Camera(float fov, float aspectRatio, float nearPlane, float farPlane);
 
-    mutable std::function<void()> OnCameraMoved;
+    mutable std::vector<std::function<void()>> OnCameraMovedListeners;
+    void AddOnCameraMovedListener(std::function<void()> listener) const;
+
+    void NotifyCameraMoved() const;
 
     void SetTarget(const glm::vec3& target);
     void SetAspectRatio(float aspectRatio);
