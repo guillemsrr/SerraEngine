@@ -13,4 +13,6 @@ public:
     
     static float RandomFloat();
     static float RandomInRange(float min, float max);
+    static glm::vec3 RandomInUnitSphere();
+    static glm::vec3 RandomUnitVector();
 };

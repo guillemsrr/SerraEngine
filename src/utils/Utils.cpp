@@ -31,3 +31,17 @@ float Utils::RandomInRange(float min, float max)
 {
     return min + (max - min) * RandomFloat();
 }
+
+glm::vec3 Utils::RandomInUnitSphere()
+{
+    while (true)
+    {
+        auto p = glm::vec3(RandomInRange(-1, 1), RandomInRange(-1, 1), RandomInRange(-1, 1));
+        if (glm::dot(p, p) < 1) return p;
+    }
+}
+
+glm::vec3 Utils::RandomUnitVector()
+{
+    return glm::normalize(RandomInUnitSphere());
+}
