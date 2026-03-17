@@ -7,8 +7,9 @@
 
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
+#include "core/Actor.h"
 
-class Camera
+class Camera : public Actor
 {
 public:
     Camera(float aspectRatio);
@@ -50,13 +51,10 @@ public:
     void SetMaxRadius(int maxRadius);
 
 private:
-    glm::vec3 _position;
     glm::vec3 _target;
     glm::mat4 _viewMatrix;
     glm::mat4 _projectionMatrix;
 
-    float _yawRad = 0.f;
-    float _pitchRad = 0.f;
     float _radius = 30.f;
     float _minRadius = 1.f;
     float _maxRadius = 100.f;

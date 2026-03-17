@@ -1,11 +1,11 @@
-﻿#include "Camera.h"
+#include "Camera.h"
 
-Camera::Camera(float aspectRatio): _position(), _target(), _viewMatrix(), _projectionMatrix(), _aspectRatio(aspectRatio)
+Camera::Camera(float aspectRatio): _target(), _viewMatrix(), _projectionMatrix(), _aspectRatio(aspectRatio)
 {
 }
 
 Camera::Camera(float fov, float aspect, float nearP, float farP)
-    : _position(), _target(), _fov(fov), _aspectRatio(aspect), _nearP(nearP), _farP(farP)
+    : _target(), _fov(fov), _aspectRatio(aspect), _nearP(nearP), _farP(farP)
 {
     UpdateViewMatrix();
     UpdateProjectionMatrix();
@@ -55,18 +55,18 @@ const glm::mat4& Camera::GetProjectionMatrix() const
 
 glm::vec3 Camera::GetPosition() const
 {
-    return _position;
+    return Position;
 }
 
 glm::vec3 Camera::GetForward() const
 {
-    glm::vec3 forward = glm::normalize(_target - _position);
+    glm::vec3 forward = glm::normalize(_target - Position);
     return forward;
 }
 
 glm::vec3 Camera::GetRight() const
 {
-    glm::vec3 forward = glm::normalize(_target - _position);
+    glm::vec3 forward = glm::normalize(_target - Position);
     glm::vec3 right = glm::normalize(glm::cross(forward, _upVector));
     return right;
 }
@@ -80,14 +80,14 @@ glm::vec3 Camera::GetUp() const
 
 void Camera::UpdatePosition()
 {
-    float camX = _radius * cosf(_pitchRad) * sinf(_yawRad);
-    float camY = _radius * sinf(_pitchRad);
-    float camZ = _radius * cosf(_pitchRad) * cosf(_yawRad);
+    float camX = _radius * cosf(Rotation.x) * sinf(Rotation.y);
+    float camY = _radius * sinf(Rotation.x);
+    float camZ = _radius * cosf(Rotation.x) * cosf(Rotation.y);
     glm::vec3 newPosition = _target + glm::vec3(camX, camY, camZ);
 
-    if (newPosition != _position)
+    if (newPosition != Position)
     {
-        _position = newPosition;
+        Position = newPosition;
         UpdateViewMatrix();
         NotifyCameraMoved();
     }
@@ -97,10 +97,10 @@ void Camera::ApplyMotion(float xrel, float yrel)
 {
     if (std::abs(xrel) < 1e-6f && std::abs(yrel) < 1e-6f) return;
 
-    _yawRad -= xrel * _sensitivity;
-    _pitchRad -= yrel * _sensitivity;
+    Rotation.y -= xrel * _sensitivity;
+    Rotation.x -= yrel * _sensitivity;
 
-    _pitchRad = glm::clamp(_pitchRad, -_pitchLimit, _pitchLimit);
+    Rotation.x = glm::clamp(Rotation.x, -_pitchLimit, _pitchLimit);
 
     NotifyCameraMoved();
 }
@@ -119,9 +119,9 @@ void Camera::AddRadius(float wheelValue)
 
 void Camera::SetPosition(const glm::vec3& position)
 {
-    if (_position != position)
+    if (Position != position)
     {
-        _position = position;
+        Position = position;
         UpdateViewMatrix();
         NotifyCameraMoved();
     }
@@ -136,9 +136,9 @@ void Camera::SetRotationAngles(float yaw, float pitch)
 void Camera::SetYawAngle(float yaw)
 {
     float yawRad = glm::radians(yaw);
-    if (_yawRad != yawRad)
+    if (Rotation.y != yawRad)
     {
-        _yawRad = yawRad;
+        Rotation.y = yawRad;
         NotifyCameraMoved();
     }
 }
@@ -146,9 +146,9 @@ void Camera::SetYawAngle(float yaw)
 void Camera::SetPitchAngle(float pitch)
 {
     float pitchRad = glm::radians(pitch);
-    if (_pitchRad != pitchRad)
+    if (Rotation.x != pitchRad)
     {
-        _pitchRad = pitchRad;
+        Rotation.x = pitchRad;
         NotifyCameraMoved();
     }
 }
@@ -214,7 +214,7 @@ float Camera::GetFOVRad() const
 
 float Camera::GetPitchAngle() const
 {
-    return glm::degrees(_pitchRad);
+    return glm::degrees(Rotation.x);
 }
 
 void Camera::SetMaxRadius(int maxRadius)
@@ -224,7 +224,7 @@ void Camera::SetMaxRadius(int maxRadius)
 
 void Camera::UpdateViewMatrix()
 {
-    _viewMatrix = glm::lookAt(_position, _target, _upVector);
+    _viewMatrix = glm::lookAt(Position, _target, _upVector);
 }
 
 void Camera::UpdateProjectionMatrix()
