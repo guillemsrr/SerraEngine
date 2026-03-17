@@ -1,5 +1,7 @@
-﻿#include "RendererBase.h"
+#include "RendererBase.h"
 #include <imgui_impl_opengl3_loader.h>
+
+#include <glm/common.hpp>
 
 RendererBase::RendererBase(Camera* camera)
 {
@@ -8,8 +10,35 @@ RendererBase::RendererBase(Camera* camera)
 
 void RendererBase::RenderBackground()
 {
-    glClearColor(255, 255, 255, 1.f);
+    glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
+
     glClear(GL_COLOR_BUFFER_BIT);
+}
+
+glm::vec3 RendererBase::FilterSurfaceColor(const glm::vec3& color, float audioEmission) const
+{
+    /*
+    if (_renderMode == SerraEngine::RenderMode::Light)
+    {
+        return color;
+    }
+    */
+
+    const float luminance = glm::dot(color, glm::vec3(0.299f, 0.587f, 0.114f));
+    const glm::vec3 darkSurface = glm::vec3(luminance * 0.18f);
+    const glm::vec3 glow = glm::vec3(glm::clamp(audioEmission, 0.0f, 1.0f));
+    return glm::clamp(darkSurface + glow, glm::vec3(0.0f), glm::vec3(1.0f));
+}
+
+glm::vec4 RendererBase::FilterSurfaceColor(const glm::vec4& color, float audioEmission) const
+{
+    return glm::vec4(FilterSurfaceColor(glm::vec3(color), audioEmission), color.a);
+}
+
+glm::vec3 RendererBase::GetAudioGlowColor(float energy) const
+{
+    const float intensity = glm::clamp(energy, 0.0f, 1.0f);
+    return glm::vec3(intensity);
 }
 
 ImU32 RendererBase::GetHUDColor()
