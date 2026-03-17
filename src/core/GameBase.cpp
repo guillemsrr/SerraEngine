@@ -1,4 +1,4 @@
-﻿#include "GameBase.h"
+#include "GameBase.h"
 #include <imgui.h>
 #include <memory>
 
@@ -6,7 +6,7 @@
 
 #include "graphics/RendererBase.h"
 
-SerraEngine::GameBase::GameBase(): _camera(nullptr), _rendererBase(nullptr)
+SerraEngine::GameBase::GameBase() : _camera(nullptr), _rendererBase(nullptr)
 {
 }
 
@@ -22,7 +22,8 @@ void SerraEngine::GameBase::Init(SDL_Window* window)
 
 void SerraEngine::GameBase::HandleEvent(const SDL_Event& event)
 {
-    if (event.window.type == SDL_EVENT_WINDOW_RESIZED || event.window.type == SDL_EVENT_WINDOW_PIXEL_SIZE_CHANGED)
+    if ((event.window.type == SDL_EVENT_WINDOW_RESIZED || event.window.type == SDL_EVENT_WINDOW_PIXEL_SIZE_CHANGED)
+        && _rendererBase != nullptr)
     {
         int newWidth = event.window.data1;
         int newHeight = event.window.data2;
@@ -43,6 +44,16 @@ void SerraEngine::GameBase::SetRenderer(RendererBase* renderer)
     _rendererBase = renderer;
 }
 
+RendererBase* SerraEngine::GameBase::GetRenderer()
+{
+    return _rendererBase;
+}
+
+const RendererBase* SerraEngine::GameBase::GetRenderer() const
+{
+    return _rendererBase;
+}
+
 void SerraEngine::GameBase::SetAudioEngine(AudioEngine* audioEngine)
 {
     _audioEngine = audioEngine;
@@ -55,9 +66,14 @@ void SerraEngine::GameBase::AddInputHandler(InputBase* inputHandler)
 
 void SerraEngine::GameBase::RenderHUD()
 {
+    if (_rendererBase == nullptr)
+    {
+        return;
+    }
+
     const float DISTANCE_FROM_EDGE = 10.0f;
     ImVec2 window_pos = ImVec2(DISTANCE_FROM_EDGE, DISTANCE_FROM_EDGE);
-    ImVec2 window_pos_pivot = ImVec2(0.0f, 0.0f); // top-left
+    ImVec2 window_pos_pivot = ImVec2(0.0f, 0.0f);
 
     ImGui::SetNextWindowPos(window_pos, ImGuiCond_Always, window_pos_pivot);
     ImGui::SetNextWindowBgAlpha(0.0f);
@@ -75,7 +91,7 @@ void SerraEngine::GameBase::RenderHUD()
     ImGui::End();
 
     window_pos = ImVec2(ImGui::GetIO().DisplaySize.x - DISTANCE_FROM_EDGE, DISTANCE_FROM_EDGE);
-    window_pos_pivot = ImVec2(1.0f, 0.0f); // top-right
+    window_pos_pivot = ImVec2(1.0f, 0.0f);
 
     ImGui::SetNextWindowPos(window_pos, ImGuiCond_Always, window_pos_pivot);
     ImGui::SetNextWindowBgAlpha(0.f);

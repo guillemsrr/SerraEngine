@@ -1,4 +1,4 @@
-﻿// Copyright (c) Guillem Serra. All Rights Reserved.
+// Copyright (c) Guillem Serra. All Rights Reserved.
 
 #pragma once
 #include <vector>
@@ -32,6 +32,8 @@ namespace SerraEngine
         virtual void RenderUI() = 0;
 
         void SetRenderer(RendererBase* renderer);
+        RendererBase* GetRenderer();
+        const RendererBase* GetRenderer() const;
         void SetAudioEngine(AudioEngine* audioEngine);
         void AddInputHandler(InputBase* inputHandler);
 
