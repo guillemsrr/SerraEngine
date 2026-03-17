@@ -41,12 +41,24 @@ glm::vec3 RendererBase::GetAudioGlowColor(float energy) const
     return glm::vec3(intensity);
 }
 
-ImU32 RendererBase::GetHUDColor()
+ImU32 RendererBase::GetHUDTextColor()
 {
     return IM_COL32(0, 0, 0, 255);
+}
+
+ImU32 RendererBase::GetHUDBackgroundColor()
+{
+    return IM_COL32(255, 255, 255, 180);
 }
 
 void RendererBase::SetViewPortSize(int new_width, int new_height)
 {
     glViewport(0, 0, new_width, new_height);
+}
+
+ImGuiWindowFlags RendererBase::GetHUDFlags()
+{
+    return ImGuiWindowFlags_NoDecoration | ImGuiWindowFlags_AlwaysAutoResize /*| ImGuiWindowFlags_NoFocusOnAppearing
+        | ImGuiWindowFlags_NoNav | ImGuiWindowFlags_NoMove*/
+    ;
 }

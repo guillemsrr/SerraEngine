@@ -19,8 +19,10 @@ public:
     glm::vec4 FilterSurfaceColor(const glm::vec4& color, float audioEmission = 0.0f) const;
     glm::vec3 GetAudioGlowColor(float energy = 1.0f) const;
 
-    virtual ImU32 GetHUDColor();
+    virtual ImU32 GetHUDTextColor();
+    virtual ImU32 GetHUDBackgroundColor();
     void SetViewPortSize(int new_width, int new_height);
+    ImGuiWindowFlags GetHUDFlags();
 
 protected:
     const Camera* _camera;

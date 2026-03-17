@@ -76,15 +76,15 @@ void SerraEngine::GameBase::RenderHUD()
     ImVec2 window_pos_pivot = ImVec2(0.0f, 0.0f);
 
     ImGui::SetNextWindowPos(window_pos, ImGuiCond_Always, window_pos_pivot);
-    ImGui::SetNextWindowBgAlpha(0.0f);
 
-    ImU32 HUDColor = _rendererBase->GetHUDColor();
-    ImGui::PushStyleColor(ImGuiCol_Text, HUDColor);
+    ImU32 HUDBackgroundColor = _rendererBase->GetHUDBackgroundColor();
+    ImGui::PushStyleColor(ImGuiCol_WindowBg, HUDBackgroundColor);
+    ImU32 HUDTextColor = _rendererBase->GetHUDTextColor();
+    ImGui::PushStyleColor(ImGuiCol_Text, HUDTextColor);
 
     ImGui::Begin("HUD",
                  nullptr,
-                 ImGuiWindowFlags_NoDecoration | ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_NoFocusOnAppearing
-                 | ImGuiWindowFlags_NoNav | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoBackground);
+                 _rendererBase->GetHUDFlags());
 
     RenderUI();
 
@@ -94,18 +94,18 @@ void SerraEngine::GameBase::RenderHUD()
     window_pos_pivot = ImVec2(1.0f, 0.0f);
 
     ImGui::SetNextWindowPos(window_pos, ImGuiCond_Always, window_pos_pivot);
-    ImGui::SetNextWindowBgAlpha(0.f);
+    //ImGui::SetNextWindowBgAlpha(0.7f);
 
     ImGui::Begin("FPS",
                  nullptr,
-                 ImGuiWindowFlags_NoDecoration | ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_NoFocusOnAppearing
-                 | ImGuiWindowFlags_NoNav | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoBackground);
+                 _rendererBase->GetHUDFlags());
+
 
     float ms = 1000.0f / ImGui::GetIO().Framerate;
     ImGui::Text("FPS: %.1f (%.3f ms)", ImGui::GetIO().Framerate, ms);
     ImGui::End();
 
-    ImGui::PopStyleColor();
+    ImGui::PopStyleColor(2);
 }
 
 float SerraEngine::GameBase::GetAspectRatio(int width, int height)
