@@ -5,6 +5,7 @@
 #include <glm/vec3.hpp>
 #include <glm/vec4.hpp>
 
+#include "Color.h"
 #include "Camera.h"
 
 class RendererBase
@@ -16,7 +17,7 @@ public:
     virtual void RenderBackground();
 
     glm::vec3 FilterSurfaceColor(const glm::vec3& color, float audioEmission = 0.0f) const;
-    glm::vec4 FilterSurfaceColor(const glm::vec4& color, float audioEmission = 0.0f) const;
+    color FilterSurfaceColor(const color& color, float audioEmission = 0.0f) const;
     glm::vec3 GetAudioGlowColor(float energy = 1.0f) const;
 
     virtual ImU32 GetHUDTextColor();

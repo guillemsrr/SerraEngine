@@ -30,7 +30,7 @@ glm::vec3 RendererBase::FilterSurfaceColor(const glm::vec3& color, float audioEm
     return glm::clamp(darkSurface + glow, glm::vec3(0.0f), glm::vec3(1.0f));
 }
 
-glm::vec4 RendererBase::FilterSurfaceColor(const glm::vec4& color, float audioEmission) const
+color RendererBase::FilterSurfaceColor(const color& color, float audioEmission) const
 {
     return glm::vec4(FilterSurfaceColor(glm::vec3(color), audioEmission), color.a);
 }
