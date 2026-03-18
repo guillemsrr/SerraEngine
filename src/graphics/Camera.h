@@ -55,6 +55,8 @@ private:
     glm::mat4 _viewMatrix;
     glm::mat4 _projectionMatrix;
 
+    float _yaw = 0.f;
+    float _pitch = 0.f;
     float _radius = 30.f;
     float _minRadius = 1.f;
     float _maxRadius = 100.f;

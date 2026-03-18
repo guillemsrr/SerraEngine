@@ -1,12 +1,16 @@
 #include "Camera.h"
 
-Camera::Camera(float aspectRatio): _target(), _viewMatrix(), _projectionMatrix(), _aspectRatio(aspectRatio)
+Camera::Camera(float aspectRatio) : _viewMatrix(1.f), _projectionMatrix(1.f), _aspectRatio(aspectRatio)
 {
+    UpdatePosition();
+    UpdateViewMatrix();
+    UpdateProjectionMatrix();
 }
 
 Camera::Camera(float fov, float aspect, float nearP, float farP)
-    : _target(), _fov(fov), _aspectRatio(aspect), _nearP(nearP), _farP(farP)
+    : _viewMatrix(1.f), _projectionMatrix(1.f), _fov(fov), _aspectRatio(aspect), _nearP(nearP), _farP(farP)
 {
+    UpdatePosition();
     UpdateViewMatrix();
     UpdateProjectionMatrix();
 }
@@ -80,9 +84,9 @@ glm::vec3 Camera::GetUp() const
 
 void Camera::UpdatePosition()
 {
-    float camX = _radius * cosf(Rotation.x) * sinf(Rotation.y);
-    float camY = _radius * sinf(Rotation.x);
-    float camZ = _radius * cosf(Rotation.x) * cosf(Rotation.y);
+    float camX = _radius * cosf(_pitch) * sinf(_yaw);
+    float camY = _radius * sinf(_pitch);
+    float camZ = _radius * cosf(_pitch) * cosf(_yaw);
     glm::vec3 newPosition = _target + glm::vec3(camX, camY, camZ);
 
     if (newPosition != Position)
@@ -97,10 +101,10 @@ void Camera::ApplyMotion(float xrel, float yrel)
 {
     if (std::abs(xrel) < 1e-6f && std::abs(yrel) < 1e-6f) return;
 
-    Rotation.y -= xrel * _sensitivity;
-    Rotation.x -= yrel * _sensitivity;
+    _yaw -= xrel * _sensitivity;
+    _pitch -= yrel * _sensitivity;
 
-    Rotation.x = glm::clamp(Rotation.x, -_pitchLimit, _pitchLimit);
+    _pitch = glm::clamp(_pitch, -_pitchLimit, _pitchLimit);
 
     NotifyCameraMoved();
 }
@@ -136,9 +140,9 @@ void Camera::SetRotationAngles(float yaw, float pitch)
 void Camera::SetYawAngle(float yaw)
 {
     float yawRad = glm::radians(yaw);
-    if (Rotation.y != yawRad)
+    if (_yaw != yawRad)
     {
-        Rotation.y = yawRad;
+        _yaw = yawRad;
         NotifyCameraMoved();
     }
 }
@@ -146,9 +150,9 @@ void Camera::SetYawAngle(float yaw)
 void Camera::SetPitchAngle(float pitch)
 {
     float pitchRad = glm::radians(pitch);
-    if (Rotation.x != pitchRad)
+    if (_pitch != pitchRad)
     {
-        Rotation.x = pitchRad;
+        _pitch = pitchRad;
         NotifyCameraMoved();
     }
 }
@@ -214,7 +218,7 @@ float Camera::GetFOVRad() const
 
 float Camera::GetPitchAngle() const
 {
-    return glm::degrees(Rotation.x);
+    return glm::degrees(_pitch);
 }
 
 void Camera::SetMaxRadius(int maxRadius)
