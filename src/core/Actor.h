@@ -6,16 +6,19 @@
 
 #include <glm/gtc/quaternion.hpp>
 
+using vec3 = glm::vec3;
+
 class Actor
 {
 public:
     Actor() = default;
     virtual ~Actor() = default;
 
-    glm::vec3 Position = glm::vec3(0.0f);
+    vec3 Position = vec3(0.0f);
     glm::quat Rotation = glm::quat();
-    glm::vec3 Scale = glm::vec3(1.0f);
+    vec3 Scale = vec3(1.0f);
 
-    void SetRotation(const glm::quat& rotation) { Rotation = rotation; }
-    void SetRotation(const glm::mat3& rotation) { Rotation = glm::quat_cast(rotation); }
+    void SetPosition(vec3 position);
+    void SetRotation(const glm::quat& rotation);
+    void SetRotation(const glm::mat3& rotation);
 };
