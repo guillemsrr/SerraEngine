@@ -211,11 +211,6 @@ float Camera::GetFOV() const
     return _fov;
 }
 
-float Camera::GetFOVRad() const
-{
-    return glm::radians(GetFOV());
-}
-
 float Camera::GetPitchAngle() const
 {
     return glm::degrees(_pitch);

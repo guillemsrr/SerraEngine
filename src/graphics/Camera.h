@@ -46,7 +46,6 @@ public:
 
     float GetAspectRatio() const;
     float GetFOV() const;
-    float GetFOVRad() const;
     float GetPitchAngle() const;
     void SetMaxRadius(int maxRadius);
 
