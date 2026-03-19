@@ -26,9 +26,7 @@ protected:
     const float _minDuration = 0.1f;
     const float _baseVolume = 0.5f;
 
-    virtual void HandleAudio(AudioData& voice, float* samples, int count)
-    {
-    }
+    virtual void HandleAudio(AudioData& voice, float* samples, int count) = 0;
 
     std::vector<AudioData> _activeAudios;
 

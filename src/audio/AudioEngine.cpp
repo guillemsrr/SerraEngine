@@ -33,7 +33,7 @@ void AudioEngine::PlaySynthSoundMix(float frequency, float duration, float volum
 
     duration = std::max(duration, _minDuration);
 
-    AudioData audioData;
+    AudioData audioData{};
     audioData.Frequency = frequency;
     audioData.Duration = duration;
     audioData.Volume = volume;
@@ -84,7 +84,9 @@ void AudioEngine::FeedAudioCallback(void* userdata, SDL_AudioStream* stream, int
         for (AudioData& voice : engine->_activeAudios)
         {
             if (voice.Elapsed >= voice.Duration)
+            {
                 continue;
+            }
 
             engine->HandleAudio(voice, samples, count);
         }
