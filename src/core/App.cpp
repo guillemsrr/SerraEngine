@@ -1,4 +1,4 @@
-﻿#include "App.h"
+#include "App.h"
 #include <imgui.h>
 #include <imgui_impl_opengl3.h>
 #include <imgui_impl_sdl3.h>
@@ -42,11 +42,11 @@ namespace SerraEngine
         }
 
 #ifndef __EMSCRIPTEN__
-        SDL_Rect displayBounds;
-        SDL_GetDisplayBounds(2, &displayBounds);
-        int centeredX = displayBounds.x + (displayBounds.w - width) / 2;
-        int centeredY = displayBounds.y + (displayBounds.h - height) / 2;
-        SDL_SetWindowPosition(_window, centeredX, centeredY);
+        // Display IDs are assigned by SDL and are not monitor indices.
+        if (!SDL_SetWindowPosition(_window, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED))
+        {
+            SDL_Log("Failed to center window: %s", SDL_GetError());
+        }
 #endif
 
         _glContext = SDL_GL_CreateContext(_window);
